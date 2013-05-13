@@ -28,7 +28,7 @@ $translationUnknown = [
 //these are correctly mapped too, and the code uses these
 //as the "pre-existing vocabulary...with their matched Spanish translation"
 $translationKnown = [
-    'cup' => 'tazaa', 
+    'cup' => 'taza', 
     'car' => 'coche',
     'elevator' => 'ascensor',
     'manager' => 'gerente',
