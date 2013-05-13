@@ -15,7 +15,9 @@ if (!function_exists('stats_stat_correlation')) {
     require_once 'stats_stat_correlation.php';
 }
 
-//theyre correctly mapped, eg bacon => tocino in spanish. but, the code doesnt assume or use this fact.
+//correctly mapped english to spanish words, eg bacon => tocino in spanish. 
+//but, the code doesnt assume or use this fact that theyre correctly mapped, 
+//it will find its own mapping.
 $translationUnknown = [
     'bacon' => 'tocino',
     'comes' => 'viene',
@@ -24,7 +26,7 @@ $translationUnknown = [
 ];
 
 //these are correctly mapped too, and the code uses these
-// as the "pre-existing vocabulary...with their matched Spanish translation"
+//as the "pre-existing vocabulary...with their matched Spanish translation"
 $translationKnown = [
     'cup' => 'tazaa', 
     'car' => 'coche',
@@ -92,52 +94,6 @@ function translate($translationKnown, $translationUnknown) {
     $translation = array_combine(array_keys($englishMatrix), array_keys($bestMatrix));
     return $translation;
 }
-
-
-//makes the matrix 1 column wider by pushing the supplied array into the matrix, on its left side
-//used to label the left side of a matrix
-function addLeftColumnToMatrix($matrix, $leftColValues) {
-    $new = [];
-    foreach ($matrix as $k => $row) {
-        array_unshift($row, array_shift($leftColValues));
-        $new[$k] = $row;
-    }
-    return $new;
-}
-
-//prints a matrix as a formatted ascii table, like an sql result set.
-function ascii_table($data) {
-
-    $keys = array_keys(end($data));
-
-    # calculate optimal width
-    $wid = array_map('strlen', $keys);
-    foreach($data as $row) {
-        foreach(array_values($row) as $k => $v)
-            $wid[$k] = max($wid[$k], strlen($v));
-    }
-
-    # build format and separator strings
-    foreach($wid as $k => $v) {
-        $fmt[$k] = "%-{$v}s";
-        $sep[$k] = str_repeat('-', $v);
-    }
-    $fmt = '| ' . implode(' | ', $fmt) . ' |';
-    $sep = '+-' . implode('-+-', $sep) . '-+';
-
-    # create header
-    $buf = array($sep, vsprintf($fmt, $keys), $sep);
-
-    # print data
-    foreach($data as $row) {
-        $buf[] = vsprintf($fmt, $row);
-        $buf[] = $sep;
-    }
-
-    # finis
-    return implode("\n", $buf);
-}
-
 
 
 //http://stackoverflow.com/questions/5506888/permutations-all-possible-sets-of-numbers
