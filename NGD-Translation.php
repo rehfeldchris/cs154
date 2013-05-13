@@ -82,7 +82,6 @@ function translate($translationKnown, $translationUnknown) {
     $bestMatrix = $matrixPermutations[0];
     foreach ($matrixPermutations as $spanishMatrixPerm) {
         $correlation = pairwiseCorrelation($englishMatrix, $spanishMatrixPerm);
-        echo "$correlation\n";
         if ($correlation >= $bestCorrelation) {
             $bestCorrelation = $correlation;
             $bestMatrix = $spanishMatrixPerm;
