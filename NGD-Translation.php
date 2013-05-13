@@ -85,7 +85,6 @@ function translate($translationKnown, $translationUnknown) {
         echo "$correlation\n";
         if ($correlation >= $bestCorrelation) {
             $bestCorrelation = $correlation;
-            echo "$bestCorrelation\n";
             $bestMatrix = $spanishMatrixPerm;
         }
     }
@@ -103,11 +102,11 @@ function pc_permute($items, $perms = array( )) {
     }  else {
         $return = array();
         for ($i = count($items) - 1; $i >= 0; --$i) {
-             $newitems = $items;
-             $newperms = $perms;
-         list($foo) = array_splice($newitems, $i, 1);
-             array_unshift($newperms, $foo);
-             $return = array_merge($return, pc_permute($newitems, $newperms));
+            $newitems = $items;
+            $newperms = $perms;
+            list($foo) = array_splice($newitems, $i, 1);
+            array_unshift($newperms, $foo);
+            $return = array_merge($return, pc_permute($newitems, $newperms));
          }
     }
     return $return;
