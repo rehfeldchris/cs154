@@ -1,6 +1,19 @@
 <?php
-//github.com/rehfeldchris/cs154
+/*
+github.com/rehfeldchris/cs154
+doesnt currently produce the correct translation. it says:
+   bacon => de
+   comes => viene
+   from => tocino
+   heaven => cielo
+   
+no time to investigate...it could be correct program behavior.
+*/
 header('content-type: text/plain');
+
+if (!function_exists('stats_stat_correlation')) {
+	require_once 'stats_stat_correlation.php';
+}
 
 //theyre correctly mapped, eg bacon => tocino in spanish. but, the code doesnt assume or use this fact.
 $translationUnknown = [
@@ -67,8 +80,10 @@ function translate($translationKnown, $translationUnknown) {
 	$bestMatrix = $matrixPermutations[0];
 	foreach ($matrixPermutations as $spanishMatrixPerm) {
 		$correlation = pairwiseCorrelation($englishMatrix, $spanishMatrixPerm);
+		echo "$correlation\n";
 		if ($correlation >= $bestCorrelation) {
 			$bestCorrelation = $correlation;
+			echo "$bestCorrelation\n";
 			$bestMatrix = $spanishMatrixPerm;
 		}
 	}
@@ -165,7 +180,11 @@ function getNumGoogleResults($query) {
 	return (float) trim(str_replace(',', '', $m[1]));
 }
 
-//TODO: take a statistics course...
+
 function pairwiseCorrelation($matrixA, $matrixB) {
-	return 0;
+	//flatten matrix to 1 dimensional array
+	$flatA = array_values(call_user_func_array('array_merge', $matrixA));
+	$flatB = array_values(call_user_func_array('array_merge', $matrixB));
+	return stats_stat_correlation($flatA, $flatB);
 }
+
